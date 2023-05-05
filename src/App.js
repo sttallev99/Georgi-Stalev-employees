@@ -23,25 +23,56 @@ function App() {
   }
 
   const countSum = (dateFrom, dateTo) => {
-    dateFrom = new Date(dateFrom);
-    dateTo = dateTo.toLowerCase() === 'null' ? new Date() : new Date(dateTo);
-
+    // dateFrom = new Date(dateFrom);
+    // dateTo = dateTo.toLowerCase() === 'null' ? new Date() : new Date(dateTo);
+    console.log(dateFrom)
+    console.log(dateTo)
     let diffTime = dateTo.getTime() - dateFrom.getTime();
 
     return Math.floor(diffTime / (1000 * 3600 * 24))
   }
 
+  const checkInterval = (emp1, emp2) => {
+    let empOneDateFrom = new Date(emp1.DateFrom);
+    let empOneDateTo = emp1.DateTo.toLowerCase() === 'null'
+      ? new Date()
+      : new Date(emp1.DateTo);
+    let empTwoDateFrom = new Date(emp2.DateFrom);
+    let empTwoDateTo = emp2.DateTo.toLowerCase() === 'null'
+    ? new Date()
+    : new Date(emp2.DateTo);
+
+    if(empTwoDateFrom > empOneDateFrom && empTwoDateFrom < empOneDateTo) {
+      if(empTwoDateTo > empOneDateTo) {
+        return countSum(empTwoDateFrom, empOneDateTo);
+      } else {
+        return countSum(empTwoDateFrom, empTwoDateTo);
+      }
+    }
+
+    if(empOneDateFrom > empTwoDateFrom && empOneDateFrom < empTwoDateTo) {
+      if(empTwoDateTo > empOneDateTo) {
+        return countSum(empOneDateFrom, empOneDateTo);
+      } else {
+        return countSum(empOneDateFrom, empTwoDateTo);
+      }
+    }
+  }
+
   const createModifyData = (data) => {
+    console.log(data)
     const resultArr = [];
     let row;
     let daysSum = 0;
     for(let i = 0; i < data.length; i++) {
       for(let j = i + 1; j < data.length; j++) {
-        let currDaysSum = countSum(data[i].DateFrom, data[i].DateTo) + countSum(data[j].DateFrom, data[j].DateTo);
-        daysSum = countSum(data[i].DateFrom, data[i].DateTo) + countSum(data[j].DateFrom, data[j].DateTo);
+        let currDaysSum = checkInterval(data[i], data[j]);
+        console.log(currDaysSum)
         if(currDaysSum > daysSum) {
           daysSum = currDaysSum;
-          currDaysSum = 0;
+        }
+        if(daysSum === 0 ) {
+          continue;
         }
         row = { 
           'Employee ID #1': data[i].EmpID,
@@ -73,6 +104,7 @@ function App() {
         mappedResult.forEach((value, key) => {
           if(value.length >= 2) {
             const modifyResult = createModifyData(value);
+            console.log(modifyResult)
             
             modifyResult.map((d) => {
               rowsArray.push(Object.keys(d));
