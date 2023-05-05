@@ -64,7 +64,6 @@ function App() {
     for(let i = 0; i < data.length; i++) {
       for(let j = i + 1; j < data.length; j++) {
         let currDaysSum = checkInterval(data[i], data[j]);
-        console.log(currDaysSum)
         if(currDaysSum > daysSum) {
           daysSum = currDaysSum;
         }
@@ -101,7 +100,6 @@ function App() {
         mappedResult.forEach((value, key) => {
           if(value.length >= 2) {
             const modifyResult = createModifyData(value);
-            console.log(modifyResult)
             
             modifyResult.map((d) => {
               rowsArray.push(Object.keys(d));
