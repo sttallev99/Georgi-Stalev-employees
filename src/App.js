@@ -25,8 +25,6 @@ function App() {
   const countSum = (dateFrom, dateTo) => {
     // dateFrom = new Date(dateFrom);
     // dateTo = dateTo.toLowerCase() === 'null' ? new Date() : new Date(dateTo);
-    console.log(dateFrom)
-    console.log(dateTo)
     let diffTime = dateTo.getTime() - dateFrom.getTime();
 
     return Math.floor(diffTime / (1000 * 3600 * 24))
@@ -60,7 +58,6 @@ function App() {
   }
 
   const createModifyData = (data) => {
-    console.log(data)
     const resultArr = [];
     let row;
     let daysSum = 0;
@@ -71,14 +68,14 @@ function App() {
         if(currDaysSum > daysSum) {
           daysSum = currDaysSum;
         }
-        if(daysSum === 0 ) {
+        if(currDaysSum === undefined ) {
           continue;
         }
         row = { 
           'Employee ID #1': data[i].EmpID,
           'Employee ID #2': data[j].EmpID,
           'Project ID': data[i].ProjectID,
-          'Days worked': daysSum 
+          'Days worked': currDaysSum 
         }
         resultArr.push(row);
       }
